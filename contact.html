@@ -68,7 +68,9 @@
   <section>
     <div class="container">
       <div class="contact-form-wrapper fade-in">
-        <form class="contact-form" onsubmit="event.preventDefault(); alert('Thank you for your message! I\'ll get back to you soon.');">
+        <form name="contact" method="POST" data-netlify="true" netlify-honeypot="bot-field" class="contact-form" action="/contact.html?success=true">
+          <input type="hidden" name="form-name" value="contact">
+          <p class="hidden" style="display:none;"><label>Don't fill this out: <input name="bot-field"></label></p>
           <div class="form-group">
             <label for="name">Your Name</label>
             <input type="text" id="name" name="name" placeholder="e.g. Roberta" required>
@@ -228,6 +230,12 @@
       });
     }, { threshold: 0.1, rootMargin: '0px 0px -40px 0px' });
     fadeElements.forEach(el => observer.observe(el));
+
+    // Show success message after form submission
+    if (new URLSearchParams(window.location.search).get('success') === 'true') {
+      const form = document.querySelector('.contact-form');
+      form.innerHTML = '<div style="text-align:center; padding: 60px 20px;"><h2 style="color: var(--deep-rose); margin-bottom: 12px;">Message Sent!</h2><p style="color: var(--text-light); font-size: 1.1rem;">Thank you for reaching out. I\'ll get back to you within 2-3 business days.</p></div>';
+    }
   </script>
 </body>
 </html>
